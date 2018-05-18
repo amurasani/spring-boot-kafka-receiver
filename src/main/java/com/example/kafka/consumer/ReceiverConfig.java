@@ -34,7 +34,7 @@ public class ReceiverConfig {
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
             ByteArrayDeserializer.class);
         // allows a pool of processes to divide the work of consuming and processing records
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "order");
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "order-schedule");
         // automatically reset the offset to the earliest offset
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
@@ -50,6 +50,7 @@ public class ReceiverConfig {
     public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, byte[]>> kafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, byte[]> factory =
             new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConcurrency(2);
         factory.setConsumerFactory(consumerFactory());
 
         return factory;
